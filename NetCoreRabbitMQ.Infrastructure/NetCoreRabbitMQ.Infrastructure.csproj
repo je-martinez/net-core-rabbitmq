@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreRabbitMQ.Data\NetCoreRabbitMQ.Data.csproj" />
+  </ItemGroup>
+
+
 </Project>
