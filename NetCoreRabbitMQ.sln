@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ", "NetCoreRabbitMQ\NetCoreRabbitMQ.csproj", "{1C5BA4CC-33FF-42EB-83B7-45768F32B063}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Domain", "NetCoreRabbitMQ.Domain\NetCoreRabbitMQ.Domain.csproj", "{7A94EC01-F348-4314-B716-9EC556DA7182}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Infrastructure", "NetCoreRabbitMQ.Infrastructure\NetCoreRabbitMQ.Infrastructure.csproj", "{65E4F2A0-855F-419B-92CF-C1BDE355C604}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Api", "NetCoreRabbitMQ.Api\NetCoreRabbitMQ.Api.csproj", "{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,17 +14,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1C5BA4CC-33FF-42EB-83B7-45768F32B063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C5BA4CC-33FF-42EB-83B7-45768F32B063}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C5BA4CC-33FF-42EB-83B7-45768F32B063}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C5BA4CC-33FF-42EB-83B7-45768F32B063}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A94EC01-F348-4314-B716-9EC556DA7182}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A94EC01-F348-4314-B716-9EC556DA7182}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A94EC01-F348-4314-B716-9EC556DA7182}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A94EC01-F348-4314-B716-9EC556DA7182}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65E4F2A0-855F-419B-92CF-C1BDE355C604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65E4F2A0-855F-419B-92CF-C1BDE355C604}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65E4F2A0-855F-419B-92CF-C1BDE355C604}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65E4F2A0-855F-419B-92CF-C1BDE355C604}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,2 @@
+CREATE DATABASE rabbitmq_db;
+GRANT ALL PRIVILEGES ON DATABASE rabbitmq_db TO db_user;

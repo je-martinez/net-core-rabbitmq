@@ -1,6 +1,0 @@
-@NetCoreRabbitMQ_HostAddress = http://localhost:5084
-
-GET {{NetCoreRabbitMQ_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

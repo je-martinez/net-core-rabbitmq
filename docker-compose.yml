@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  NetCoreRabbitMQ_Db:
+    image: postgres:15
+    container_name: NetCoreRabbitMQ_Db
+    restart: always
+    environment:
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_pass
+    ports:
+      - "5234:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+
+volumes:
+  postgres_data:
