@@ -5,6 +5,12 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Api", "NetCoreRabbitMQ.Api\NetCoreRabbitMQ.Api.csproj", "{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Domain", "NetCoreRabbitMQ.Domain\NetCoreRabbitMQ.Domain.csproj", "{53B01EEB-7E69-4EFB-B5D3-A187F60E21F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Infrastructure", "NetCoreRabbitMQ.Infrastructure\NetCoreRabbitMQ.Infrastructure.csproj", "{DCE9F886-1B47-414A-BB3E-53A72238B5A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Data", "NetCoreRabbitMQ.Data\NetCoreRabbitMQ.Data.csproj", "{9FB1AED8-6A10-49B8-8F36-85234337A4E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,17 @@ Global
 		{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29BCFBCF-9AB7-48DA-B720-7AD89A30F3D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53B01EEB-7E69-4EFB-B5D3-A187F60E21F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53B01EEB-7E69-4EFB-B5D3-A187F60E21F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53B01EEB-7E69-4EFB-B5D3-A187F60E21F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53B01EEB-7E69-4EFB-B5D3-A187F60E21F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE9F886-1B47-414A-BB3E-53A72238B5A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE9F886-1B47-414A-BB3E-53A72238B5A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE9F886-1B47-414A-BB3E-53A72238B5A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE9F886-1B47-414A-BB3E-53A72238B5A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB1AED8-6A10-49B8-8F36-85234337A4E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB1AED8-6A10-49B8-8F36-85234337A4E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB1AED8-6A10-49B8-8F36-85234337A4E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB1AED8-6A10-49B8-8F36-85234337A4E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
