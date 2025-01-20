@@ -2,7 +2,7 @@ using NetCoreRabbitMQ.Data.Context;
 using NetCoreRabbitMQ.Domain.Entities;
 using NetCoreRabbitMQ.Infrastructure.Repositories;
 
-namespace NetCoreRabbitMQ.Infrastructure.Common
+namespace NetCoreRabbitMQ.Infrastructure.Repositories
 {
     public class UnitOfWork : IDisposable
     {
