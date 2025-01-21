@@ -42,7 +42,7 @@ app.MapPost("/session", async ([FromBody] CreateSessionDTO session, ISender _sen
     return Results.Created($"/session/{newSession.Id}", newSession);
 });
 
-app.MapPost("/session/{Id}", async ([FromRoute] Guid Id, ISender _sender) =>
+app.MapGet("/session/{Id}", async ([FromRoute] Guid Id, ISender _sender) =>
 {
     var currentSession = await _sender.Send(new GetSessionQuery(Id));
     if (currentSession == null)
