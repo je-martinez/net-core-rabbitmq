@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="MemoryPack" Version="1.21.3" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.1.0-alpha.0" />
   </ItemGroup>
 
   <ItemGroup>

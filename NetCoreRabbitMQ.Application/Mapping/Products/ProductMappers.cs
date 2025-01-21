@@ -10,7 +10,6 @@ namespace NetCoreRabbitMQ.Application.Mapping.Products
         private static MapperConfiguration configuration = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<Product, ProductDTO>().ReverseMap();
-            cfg.CreateMap<List<Product>, List<ProductDTO>>().ReverseMap();
         });
 
         static Mapper mapper = new Mapper(configuration);

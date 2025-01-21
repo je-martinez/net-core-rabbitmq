@@ -15,8 +15,8 @@ namespace NetCoreRabbitMQ.Domain.Entities
 
     public class Order : BaseEntity
     {
-        public required string OrderNumber { get; set; }
-        public required string TrackingNumber { get; set; }
+        public required string OrderNumber { get; set; } = Guid.NewGuid().ToString();
+        public required string TrackingNumber { get; set; } = Guid.NewGuid().ToString();
         public DateTimeOffset OrderDate { get; set; } = DateTime.Now.ToUniversalTime();
         public Guid SessionId { get; set; }
         public decimal SubTotal { get; set; }
