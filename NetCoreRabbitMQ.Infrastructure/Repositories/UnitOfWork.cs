@@ -1,10 +1,9 @@
 using NetCoreRabbitMQ.Data.Context;
 using NetCoreRabbitMQ.Domain.Entities;
-using NetCoreRabbitMQ.Infrastructure.Repositories;
 
 namespace NetCoreRabbitMQ.Infrastructure.Repositories
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ApiDbContext _context;
         private GenericRepository<Order> _orderRepository;
@@ -65,24 +64,25 @@ namespace NetCoreRabbitMQ.Infrastructure.Repositories
             }
         }
 
-        public void BeginTransaction()
+        public void BeginTransaction(CancellationToken cancellationToken = default)
         {
-            _context.Database.BeginTransactionAsync();
+            _context.Database.BeginTransactionAsync(cancellationToken);
         }
 
-        public void CommitTransaction()
+
+        public void CommitTransaction(CancellationToken cancellationToken = default)
         {
-            _context.Database.CommitTransactionAsync();
+            _context.Database.CommitTransactionAsync(cancellationToken);
         }
 
-        public void RollbackTransaction()
+        public void RollbackTransaction(CancellationToken cancellationToken = default)
         {
-            _context.Database.RollbackTransactionAsync();
+            _context.Database.RollbackTransactionAsync(cancellationToken);
         }
 
-        public async Task<int> Save()
+        public async Task<int> Save(CancellationToken cancellationToken = default)
         {
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync(cancellationToken);
         }
 
         private bool disposed = false;
