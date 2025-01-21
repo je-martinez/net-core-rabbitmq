@@ -1,8 +1,8 @@
 using AutoMapper;
 using NetCoreRabbitMQ.Domain.Entities;
-using NetCoreRabbitMQ.Infrastructure.DTOs;
+using NetCoreRabbitMQ.Application.DTOs.Products;
 
-namespace NetCoreRabbitMQ.Infrastructure.Mapping
+namespace NetCoreRabbitMQ.Application.Mapping.Products
 {
     public static class ProductMappers
     {

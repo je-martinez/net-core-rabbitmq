@@ -1,11 +1,12 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using NetCoreRabbitMQ.Data.Context;
+using NetCoreRabbitMQ.Domain.Common;
 
 
 namespace NetCoreRabbitMQ.Infrastructure.Repositories
 {
-    public class GenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> where TEntity : BaseEntity
     {
         protected ApiDbContext _context;
         protected DbSet<TEntity> _dbSet;

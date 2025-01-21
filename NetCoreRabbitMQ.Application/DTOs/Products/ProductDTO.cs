@@ -1,4 +1,4 @@
-namespace NetCoreRabbitMQ.Infrastructure.DTOs
+namespace NetCoreRabbitMQ.Application.DTOs.Products
 {
     public class ProductDTO
     {

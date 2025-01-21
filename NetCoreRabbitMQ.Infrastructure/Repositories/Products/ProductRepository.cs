@@ -1,5 +1,4 @@
-using NetCoreRabbitMQ.Infrastructure.DTOs;
-using NetCoreRabbitMQ.Infrastructure.Mapping;
+using NetCoreRabbitMQ.Domain.Entities;
 
 namespace NetCoreRabbitMQ.Infrastructure.Repositories.Products
 {
@@ -12,10 +11,7 @@ namespace NetCoreRabbitMQ.Infrastructure.Repositories.Products
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<ProductDTO>> GetProducts()
-        {
-            var products = await _unitOfWork.ProductRepository.Get(query => query.IsDeleted == false);
-            return ProductMappers.ToProductDTOList(products);
-        }
+        public async Task<List<Product>> GetProducts() => await _unitOfWork.ProductRepository.Get(query => query.IsDeleted == false);
+
     }
 }

@@ -1,9 +1,9 @@
-using NetCoreRabbitMQ.Infrastructure.DTOs;
+using NetCoreRabbitMQ.Domain.Entities;
 
 namespace NetCoreRabbitMQ.Infrastructure.Repositories.Products
 {
     public interface IProductRepository
     {
-        Task<List<ProductDTO>> GetProducts();
+        Task<List<Product>> GetProducts();
     }
 }

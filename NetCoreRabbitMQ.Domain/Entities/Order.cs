@@ -17,6 +17,7 @@ namespace NetCoreRabbitMQ.Domain.Entities
     {
         public required string OrderNumber { get; set; }
         public required string TrackingNumber { get; set; }
+        public DateTimeOffset OrderDate { get; set; } = DateTime.Now.ToUniversalTime();
         public Guid SessionId { get; set; }
         public decimal SubTotal { get; set; }
         public decimal Tax { get; set; }

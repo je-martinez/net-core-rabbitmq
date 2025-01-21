@@ -1,4 +1,10 @@
 using NetCoreRabbitMQ.Infrastructure.Extensions;
+using NetCoreRabbitMQ.Application.Extensions;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using NetCoreRabbitMQ.Application.DTOs.Sessions;
+using NetCoreRabbitMQ.Application.UseCases.Session.Commands;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,22 +30,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
+app.MapPost("/session", async ([FromBody] CreateSessionDTO session, ISender _sender) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    var newSession = await _sender.Send(new CreateSessionCommand(session));
+    if (newSession == null)
+    {
+        return Results.BadRequest("An error occurred while creating the session");
+    }
+    return Results.Created($"/session/{newSession.Id}", newSession);
 })
 .WithName("GetWeatherForecast");
 
