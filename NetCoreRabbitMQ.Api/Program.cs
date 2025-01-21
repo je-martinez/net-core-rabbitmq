@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NetCoreRabbitMQ.Application.DTOs.Sessions;
 using NetCoreRabbitMQ.Application.UseCases.Session.Commands;
 using Microsoft.AspNetCore.Http.HttpResults;
+using NetCoreRabbitMQ.Application.UseCases.Session.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,8 +40,17 @@ app.MapPost("/session", async ([FromBody] CreateSessionDTO session, ISender _sen
         return Results.BadRequest("An error occurred while creating the session");
     }
     return Results.Created($"/session/{newSession.Id}", newSession);
-})
-.WithName("GetWeatherForecast");
+});
+
+app.MapPost("/session/{Id}", async ([FromRoute] Guid Id, ISender _sender) =>
+{
+    var currentSession = await _sender.Send(new GetSessionQuery(Id));
+    if (currentSession == null)
+    {
+        return Results.NotFound("Session not found");
+    }
+    return Results.Ok(currentSession);
+});
 
 app.Run();
 
