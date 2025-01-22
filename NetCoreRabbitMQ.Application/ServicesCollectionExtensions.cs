@@ -8,7 +8,7 @@ namespace NetCoreRabbitMQ.Application.Extensions
 {
     public static class ServicesCollectionExtensions
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddSingleton<IBrokerProvider, BrokerProvider>();
             services.AddScoped<IOrderCalculationsService, OrderCalculationsService>();

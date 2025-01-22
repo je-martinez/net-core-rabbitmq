@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using MediatR;
 using NetCoreRabbitMQ.Domain.ValueObjects;
+using NetCoreRabbitMQ.Infrastructure.Repositories;
 using NetCoreRabbitMQ.OrdersWorker.DTOs;
 using NetCoreRabbitMQ.OrdersWorker.Features.Commands;
 using RabbitMQ.Client;
@@ -14,16 +15,16 @@ public class OrdersWorker : BackgroundService
     private readonly ILogger<OrdersWorker> _logger;
     private readonly IConfiguration _configuration;
     private readonly ConnectionFactory _factory;
-    private readonly IMediator _mediator;
     private IConnection _connection;
-
     private IChannel _channel;
 
-    public OrdersWorker(ILogger<OrdersWorker> logger, IMediator _mediator, IConfiguration configuration)
+    private readonly IServiceScopeFactory _scopeFactory;
+
+    public OrdersWorker(ILogger<OrdersWorker> logger, IConfiguration configuration, IServiceScopeFactory scopeFactory)
     {
         _logger = logger;
-        _mediator = _mediator;
         _configuration = configuration;
+        _scopeFactory = scopeFactory;
         _factory = new ConnectionFactory
         {
             HostName = _configuration["RabbitMQ:HostName"],
@@ -72,13 +73,15 @@ public class OrdersWorker : BackgroundService
         {
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
-
             if (JsonSerializer.Deserialize<OrderDTO>(message) is OrderDTO order)
             {
                 _logger.LogInformation($"Order {order.Id} received.");
-                await _mediator.Send(new MarkOrderAsConfirmedCommand(order));
+                using (var scope = _scopeFactory.CreateScope())
+                {
+                    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                    await mediator.Send(new MarkOrderAsConfirmedCommand(order));
+                }
             }
-
             await Task.CompletedTask;
         };
 
