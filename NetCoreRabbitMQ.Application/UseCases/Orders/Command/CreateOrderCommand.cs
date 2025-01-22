@@ -43,9 +43,18 @@ namespace NetCoreRabbitMQ.Application.UseCases.Orders
 
             var mappedOrder = OrderMappers.ToOrderDTO(orderCreated);
 
-            _brokerProvider.Publish<OrderDTO>(mappedOrder, BrokerExchanges.OrderExchange, BrokerTopics.OrderCreated);
+            string routingKey = getRoutingKey(mappedOrder);
+
+            _brokerProvider.Publish(mappedOrder, ExchangeAppTypes.Orders, routingKey);
 
             return mappedOrder;
         }
+
+        public static string getRoutingKey(OrderDTO order)
+        {
+            return BrokerRoutingKeys.OrdersCreated.ToString().Replace("*", order.SessionId.ToString());
+        }
+
     }
+
 }

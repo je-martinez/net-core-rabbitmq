@@ -4,6 +4,8 @@ using RabbitMQ.Client;
 using MemoryPack;
 using RabbitMQ.Client.Events;
 using System.Text;
+using System.Text.Json;
+using static NetCoreRabbitMQ.Domain.ValueObjects.BrokerExchanges;
 
 
 namespace NetCoreRabbitMQ.Application.Providers
@@ -38,46 +40,104 @@ namespace NetCoreRabbitMQ.Application.Providers
             {
                 using (var channel = await connection.CreateChannelAsync())
                 {
-                    await channel.ExchangeDeclareAsync(exchange: BrokerExchanges.OrderExchange, type: ExchangeType.Direct, durable: false);
+                    foreach (var exchange in AllAvailableExchanges)
+                    {
+                        await channel.ExchangeDeclareAsync(exchange: exchange.Value.Name, type: ExchangeType.Topic, durable: false);
+                        foreach (var queue in exchange.Value.Queue)
+                        {
+                            await channel.QueueDeclareAsync(queue: queue.Queue, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                            await channel.QueueBindAsync(queue: queue.Queue, exchange: exchange.Value.Name, routingKey: queue.RoutingKey);
+                        }
+                    }
                 }
             }
         }
 
-        public static byte[] ObjectToByteArray(Object obj)
+        public static byte[] ObjectToByteArray<T>(T obj)
         {
-            return MemoryPackSerializer.Serialize(obj);
+            byte[] messageBytes = JsonSerializer.SerializeToUtf8Bytes(obj);
+            return messageBytes;
         }
 
-        public async void Publish<T>(T message, string exchangeName, string routingKey)
+        public async void Publish<T>(T message, ExchangeAppTypes type, SupportedBrokerRoutingKeys key)
         {
             using (var connection = await _factory.CreateConnectionAsync())
             {
                 using (var channel = await connection.CreateChannelAsync())
                 {
+
+                    BrokerExchange? exchange = GetExchangeName(type);
+
+                    if (exchange == null)
+                    {
+                        return;
+                    }
+
+                    string? routingKey = BrokerRoutingKeys.GetRoutingKey(key);
+
+                    if (string.IsNullOrEmpty(routingKey))
+                    {
+                        return;
+                    }
+
                     string text = "Hello World!";
                     var body = Encoding.UTF8.GetBytes(text);
 
                     await channel.QueueDeclareAsync(queue: routingKey, durable: false, exclusive: false, autoDelete: false,
                         arguments: null);
 
-                    await channel.QueueBindAsync(queue: routingKey, exchange: BrokerExchanges.OrderExchange, routingKey: routingKey);
+                    await channel.QueueBindAsync(queue: routingKey, exchange.Name, routingKey: routingKey);
 
-                    var consumer = new AsyncEventingBasicConsumer(channel);
-                    consumer.ReceivedAsync += (model, ea) =>
-                    {
-                        var body = ea.Body.ToArray();
-                        var message = Encoding.UTF8.GetString(body);
-                        Console.WriteLine($" [x] Received {message}");
-                        return Task.CompletedTask;
-                    };
-                    await channel.BasicConsumeAsync(routingKey, autoAck: true, consumer: consumer);
-                    await channel.BasicPublishAsync(exchange: BrokerExchanges.OrderExchange, routingKey: routingKey, body: body);
+                    // var consumer = new AsyncEventingBasicConsumer(channel);
+                    // consumer.ReceivedAsync += (model, ea) =>
+                    // {
+                    //     var body = ea.Body.ToArray();
+                    //     var message = Encoding.UTF8.GetString(body);
+                    //     Console.WriteLine($" [x] Received {message}");
+                    //     return Task.CompletedTask;
+                    // };
+                    // await channel.BasicConsumeAsync(routingKey, autoAck: true, consumer: consumer);
+                    await channel.BasicPublishAsync(exchange: exchange.Name, routingKey: routingKey, body: ObjectToByteArray(message));
                     await Task.Delay(10000);
                 }
             }
         }
 
-        public void Subscribe<T>(string exchangeName, string exchangeType, string queueName, string routingKey, Action<T> action)
+
+        public async void Publish<T>(T message, ExchangeAppTypes type, string routingKey)
+        {
+            using (var connection = await _factory.CreateConnectionAsync())
+            {
+                using (var channel = await connection.CreateChannelAsync())
+                {
+
+                    BrokerExchange? exchange = GetExchangeName(type);
+
+                    if (exchange == null)
+                    {
+                        return;
+                    }
+
+                    string text = "Hello World!";
+                    var body = Encoding.UTF8.GetBytes(text);
+
+                    // var consumer = new AsyncEventingBasicConsumer(channel);
+                    // consumer.ReceivedAsync += (model, ea) =>
+                    // {
+                    //     var body = ea.Body.ToArray();
+                    //     var message = Encoding.UTF8.GetString(body);
+                    //     Console.WriteLine($" [x] Received {message}");
+                    //     return Task.CompletedTask;
+                    // };
+                    // await channel.BasicConsumeAsync(routingKey, autoAck: true, consumer: consumer);
+                    await channel.BasicPublishAsync(exchange: exchange.Name, routingKey: routingKey, body: ObjectToByteArray(message));
+                    await Task.Delay(10000);
+                }
+            }
+        }
+
+
+        public void Subscribe<T>(ExchangeAppTypes exchange, SupportedBrokerRoutingKeys key, Action<T> action)
         {
             throw new NotImplementedException();
         }
