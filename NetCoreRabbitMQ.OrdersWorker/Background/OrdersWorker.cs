@@ -1,5 +1,9 @@
 using System.Text;
+using System.Text.Json;
+using MediatR;
 using NetCoreRabbitMQ.Domain.ValueObjects;
+using NetCoreRabbitMQ.OrdersWorker.DTOs;
+using NetCoreRabbitMQ.OrdersWorker.Features.Commands;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -10,14 +14,15 @@ public class OrdersWorker : BackgroundService
     private readonly ILogger<OrdersWorker> _logger;
     private readonly IConfiguration _configuration;
     private readonly ConnectionFactory _factory;
-
+    private readonly IMediator _mediator;
     private IConnection _connection;
 
     private IChannel _channel;
 
-    public OrdersWorker(ILogger<OrdersWorker> logger, IConfiguration configuration)
+    public OrdersWorker(ILogger<OrdersWorker> logger, IMediator _mediator, IConfiguration configuration)
     {
         _logger = logger;
+        _mediator = _mediator;
         _configuration = configuration;
         _factory = new ConnectionFactory
         {
@@ -63,12 +68,18 @@ public class OrdersWorker : BackgroundService
     {
         var consumer = new AsyncEventingBasicConsumer(channel);
 
-        consumer.ReceivedAsync += (model, ea) =>
+        consumer.ReceivedAsync += async (model, ea) =>
         {
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
-            _logger.LogInformation(message);
-            return Task.CompletedTask;
+
+            if (JsonSerializer.Deserialize<OrderDTO>(message) is OrderDTO order)
+            {
+                _logger.LogInformation($"Order {order.Id} received.");
+                await _mediator.Send(new MarkOrderAsConfirmedCommand(order));
+            }
+
+            await Task.CompletedTask;
         };
 
         await channel.BasicConsumeAsync(BrokerRoutingKeys.GetRoutingKey(SupportedBrokerRoutingKeys.OrdersCreated)!, autoAck: true, consumer: consumer);
