@@ -29,9 +29,10 @@ namespace NetCoreRabbitMQ.Application.Providers
             {
                 HostName = _configuration["RabbitMQ:HostName"],
                 UserName = _configuration["RabbitMQ:UserName"],
-                Password = _configuration["RabbitMQ:Password"]
+                Password = _configuration["RabbitMQ:Password"],
+                VirtualHost = _configuration["RabbitMQ:VirtualHost"]
             };
-            Init().Wait();
+            Init();
         }
 
         private async Task Init()
