@@ -6,6 +6,5 @@ namespace NetCoreRabbitMQ.Application.Providers
     {
         void Publish<T>(T message, ExchangeAppTypes type, SupportedBrokerRoutingKeys routingKey);
         void Publish<T>(T message, ExchangeAppTypes type, string routingKey);
-        void Subscribe<T>(ExchangeAppTypes exchangeName, SupportedBrokerRoutingKeys routingKey, Action<T> action);
     }
 }

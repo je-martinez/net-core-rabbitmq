@@ -25,6 +25,9 @@ namespace NetCoreRabbitMQ.Application.Providers
         public BrokerProvider(IConfiguration configuration)
         {
             _configuration = configuration;
+            /* This code snippet is initializing a `ConnectionFactory` object with specific configuration
+            settings for connecting to a RabbitMQ server. Here's a breakdown of what each property is being
+            set to: */
             _factory = new ConnectionFactory
             {
                 HostName = _configuration["RabbitMQ:HostName"],
@@ -32,7 +35,6 @@ namespace NetCoreRabbitMQ.Application.Providers
                 Password = _configuration["RabbitMQ:Password"],
                 VirtualHost = _configuration["RabbitMQ:VirtualHost"]
             };
-            Init();
         }
 
         private async Task Init()
@@ -67,6 +69,8 @@ namespace NetCoreRabbitMQ.Application.Providers
                 using (var channel = await connection.CreateChannelAsync())
                 {
 
+                    await Init();
+
                     BrokerExchange? exchange = GetExchangeName(type);
 
                     if (exchange == null)
@@ -81,25 +85,11 @@ namespace NetCoreRabbitMQ.Application.Providers
                         return;
                     }
 
-                    string text = "Hello World!";
-                    var body = Encoding.UTF8.GetBytes(text);
-
                     await channel.QueueDeclareAsync(queue: routingKey, durable: false, exclusive: false, autoDelete: false,
                         arguments: null);
 
                     await channel.QueueBindAsync(queue: routingKey, exchange.Name, routingKey: routingKey);
-
-                    // var consumer = new AsyncEventingBasicConsumer(channel);
-                    // consumer.ReceivedAsync += (model, ea) =>
-                    // {
-                    //     var body = ea.Body.ToArray();
-                    //     var message = Encoding.UTF8.GetString(body);
-                    //     Console.WriteLine($" [x] Received {message}");
-                    //     return Task.CompletedTask;
-                    // };
-                    // await channel.BasicConsumeAsync(routingKey, autoAck: true, consumer: consumer);
                     await channel.BasicPublishAsync(exchange: exchange.Name, routingKey: routingKey, body: ObjectToByteArray(message));
-                    await Task.Delay(10000);
                 }
             }
         }
@@ -112,6 +102,8 @@ namespace NetCoreRabbitMQ.Application.Providers
                 using (var channel = await connection.CreateChannelAsync())
                 {
 
+                    await Init();
+
                     BrokerExchange? exchange = GetExchangeName(type);
 
                     if (exchange == null)
@@ -119,28 +111,10 @@ namespace NetCoreRabbitMQ.Application.Providers
                         return;
                     }
 
-                    string text = "Hello World!";
-                    var body = Encoding.UTF8.GetBytes(text);
-
-                    // var consumer = new AsyncEventingBasicConsumer(channel);
-                    // consumer.ReceivedAsync += (model, ea) =>
-                    // {
-                    //     var body = ea.Body.ToArray();
-                    //     var message = Encoding.UTF8.GetString(body);
-                    //     Console.WriteLine($" [x] Received {message}");
-                    //     return Task.CompletedTask;
-                    // };
-                    // await channel.BasicConsumeAsync(routingKey, autoAck: true, consumer: consumer);
                     await channel.BasicPublishAsync(exchange: exchange.Name, routingKey: routingKey, body: ObjectToByteArray(message));
                     await Task.Delay(10000);
                 }
             }
-        }
-
-
-        public void Subscribe<T>(ExchangeAppTypes exchange, SupportedBrokerRoutingKeys key, Action<T> action)
-        {
-            throw new NotImplementedException();
         }
     }
 }

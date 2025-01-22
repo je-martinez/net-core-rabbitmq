@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NetCoreRabbitMQ.Application.DTOs.Sessions;
 using NetCoreRabbitMQ.Application.UseCases.Session.Commands;
-using Microsoft.AspNetCore.Http.HttpResults;
 using NetCoreRabbitMQ.Application.UseCases.Session.Queries;
 using NetCoreRabbitMQ.Application.UseCases.Products.Queries;
 using NetCoreRabbitMQ.Application.DTOs.Orders;

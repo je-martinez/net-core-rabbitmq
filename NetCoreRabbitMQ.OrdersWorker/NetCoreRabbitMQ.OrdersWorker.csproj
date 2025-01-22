@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-NetCoreRabbitMQ.OrdersWorker-bdf148d7-b1f7-47d7-86fe-de1e9b685e50</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="7.1.0-alpha.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreRabbitMQ.Infrastructure\NetCoreRabbitMQ.Infrastructure.csproj" />
+    <ProjectReference Include="..\NetCoreRabbitMQ.Domain\NetCoreRabbitMQ.Domain.csproj" />
+  </ItemGroup>
+</Project>

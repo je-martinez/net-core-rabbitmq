@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Data", "Net
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.Application", "NetCoreRabbitMQ.Application\NetCoreRabbitMQ.Application.csproj", "{00F8F06C-9D27-42D6-ADEB-022ACABF9D03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreRabbitMQ.OrdersWorker", "NetCoreRabbitMQ.OrdersWorker\NetCoreRabbitMQ.OrdersWorker.csproj", "{8FA06BE4-B243-4C78-9359-700CC6ECD01E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{00F8F06C-9D27-42D6-ADEB-022ACABF9D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00F8F06C-9D27-42D6-ADEB-022ACABF9D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00F8F06C-9D27-42D6-ADEB-022ACABF9D03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FA06BE4-B243-4C78-9359-700CC6ECD01E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FA06BE4-B243-4C78-9359-700CC6ECD01E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FA06BE4-B243-4C78-9359-700CC6ECD01E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FA06BE4-B243-4C78-9359-700CC6ECD01E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
