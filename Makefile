@@ -5,5 +5,6 @@ run-migrations:
 build-images:
 	docker build -t netcore-rabbitmq-api . -f ./Dockerfile.API
 	docker build -t netcore-rabbitmq-worker . -f ./Dockerfile.Worker
+	docker build -t netcore-rabbitmq-migrator . -f ./Dockerfile.Migrator
 run-live:
 	docker-compose -f ./docker-compose.live.yml up -d --build 

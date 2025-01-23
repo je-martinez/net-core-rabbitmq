@@ -19,6 +19,20 @@ services:
     networks:
       - rabbitmq-network
 
+  db-migrator:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.Migrator
+    image: netcore-rabbitmq-migrator:latest
+    container_name: netcore-rabbitmq-migrator
+    depends_on:
+      net-core-rabbitmq-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - rabbitmq-network
+
   orders-worker:
     build:
       context: .

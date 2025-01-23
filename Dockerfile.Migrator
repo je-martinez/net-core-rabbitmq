@@ -1,0 +1,27 @@
+# Use the official .NET SDK image to build the application
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
+# Set the working directory
+WORKDIR /src
+
+# Copy the solution file and restore dependencies
+COPY NetCoreRabbitMQ.sln ./
+
+# Copy all projects to the working directory
+COPY NetCoreRabbitMQ.Api/ ./NetCoreRabbitMQ.Api/
+COPY NetCoreRabbitMQ.Application/ ./NetCoreRabbitMQ.Application/
+COPY NetCoreRabbitMQ.Data/ ./NetCoreRabbitMQ.Data/
+COPY NetCoreRabbitMQ.Domain/ ./NetCoreRabbitMQ.Domain/
+COPY NetCoreRabbitMQ.Infrastructure/ ./NetCoreRabbitMQ.Infrastructure/
+COPY NetCoreRabbitMQ.OrdersWorker/ ./NetCoreRabbitMQ.OrdersWorker/
+
+# Restore dependencies for the API project
+RUN dotnet restore ./NetCoreRabbitMQ.Api/NetCoreRabbitMQ.Api.csproj
+
+# Build the project
+RUN dotnet build ./NetCoreRabbitMQ.Api/NetCoreRabbitMQ.Api.csproj -c Release -o /app/build
+
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+ENTRYPOINT ["sh", "-c", "dotnet ef database update --project /src/NetCoreRabbitMQ.Data --startup-project /src/NetCoreRabbitMQ.Api"]
