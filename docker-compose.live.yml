@@ -1,0 +1,81 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.API
+    image: netcore-rabbitmq-api:latest
+    container_name: netcore-rabbitmq-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      net-core-rabbitmq-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - rabbitmq-network
+
+  orders-worker:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.Worker
+    image: netcore-rabbitmq-ordersworker:latest
+    container_name: netcore-rabbitmq-orders-worker
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      net-core-rabbitmq-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - rabbitmq-network
+
+  net-core-rabbitmq-db:
+    image: postgres:15
+    container_name: net-core-rabbitmq-db
+    restart: always
+    environment:
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_pass
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "rabbitmq_db"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - rabbitmq-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin_pass
+      - RABBITMQ_DEFAULT_VHOST=netcore_vhost
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    networks:
+      - rabbitmq-network
+
+networks:
+  rabbitmq-network:
+    driver: bridge
+volumes:
+  postgres_data:
